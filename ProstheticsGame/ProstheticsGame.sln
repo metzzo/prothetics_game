@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProstheticsGame", "Assembly-CSharp.csproj", "{78A5D7E7-B296-3110-2950-466B1592F90D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProstheticsGame", "Assembly-CSharp-Editor.csproj", "{7E6B0FF5-6F9E-7C0C-03C6-FDF29E374E2A}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{78A5D7E7-B296-3110-2950-466B1592F90D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{78A5D7E7-B296-3110-2950-466B1592F90D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{78A5D7E7-B296-3110-2950-466B1592F90D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{78A5D7E7-B296-3110-2950-466B1592F90D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7E6B0FF5-6F9E-7C0C-03C6-FDF29E374E2A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E6B0FF5-6F9E-7C0C-03C6-FDF29E374E2A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7E6B0FF5-6F9E-7C0C-03C6-FDF29E374E2A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7E6B0FF5-6F9E-7C0C-03C6-FDF29E374E2A}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

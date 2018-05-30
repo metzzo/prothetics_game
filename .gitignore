@@ -32,3 +32,6 @@
 +# Builds
 +*.apk
 +*.unitypackage
+
+
+Library/
