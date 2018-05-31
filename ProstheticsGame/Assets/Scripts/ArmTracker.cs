@@ -14,6 +14,9 @@ public class ArmTracker : MonoBehaviour
 
     #endregion // PRIVATE_MEMBERS
 
+    public Texture2D mOpenCvTexture;
+    public GameObject mOpenCvTarget;
+
     #region MONOBEHAVIOUR_METHODS
 
     void Start()
@@ -32,6 +35,8 @@ public class ArmTracker : MonoBehaviour
     void OnVuforiaStarted()
     {
         CameraDevice.Instance.SetFocusMode(CameraDevice.FocusMode.FOCUS_MODE_CONTINUOUSAUTO);
+        
+        
 
         // Try register camera image format
         if (CameraDevice.Instance.SetFrameFormat(mPixelFormat, true))
@@ -57,6 +62,7 @@ public class ArmTracker : MonoBehaviour
     /// </summary>
     void OnTrackablesUpdated()
     {
+        /*
         if (mFormatRegistered)
         {
             Vuforia.Image image = CameraDevice.Instance.GetCameraImage(mPixelFormat);
@@ -74,22 +80,44 @@ public class ArmTracker : MonoBehaviour
 
                 if (pixels != null && pixels.Length > 0)
                 {
-                    Mat rawMat = new Mat(image.Height, image.Width, MatType.CV_8UC4, pixels);
-                   
-                    Mat detected = new Mat();
-                    Cv2.Canny(rawMat, detected, 50, 150);
+                    Mat ping = new Mat(image.Height, image.Width, MatType.CV_8UC4, pixels);
+                    Mat pong = new Mat();
+                    Cv2.Resize(ping, pong, new Size(640, 480));
 
-                    Cv2.ImWrite("swagdude.png", detected);
+                    Cv2.CvtColor(pong, ping, ColorConversionCodes.BGRA2BGR);
+                    Cv2.CvtColor(ping, pong, ColorConversionCodes.BGR2HSV);
 
-                    /*Texture2D tex = new Texture2D(image.Width, image.Height, TextureFormat.ARGB32, false);
-                    var byteArray = new byte[image.Width * image.Height * 4];
-                    System.Runtime.InteropServices.Marshal.Copy(detected.Data, byteArray, 0, byteArray.Length);
-                    tex.LoadRawTextureData(byteArray);
-                    tex.Apply();*/
+                    Mat skinMaskPing = new Mat();
+                    Mat skinMaskPong = new Mat();
+                    Cv2.InRange(pong, new Scalar(0, 48, 80), new Scalar(120, 255, 255), skinMaskPing);
+
+                    Mat kernel = Cv2.GetStructuringElement(MorphShapes.Ellipse, new Size(11, 11));
+
+                    Cv2.Erode(skinMaskPing, skinMaskPong, kernel, null, 2);
+                    Cv2.Dilate(skinMaskPong, skinMaskPing, kernel, null, 2);
+                    Cv2.GaussianBlur(skinMaskPing, skinMaskPong, new Size(3, 3), 0);
+
+                    //Cv2.BitwiseAnd(pong, pong, ping, skinMaskPong);
+
+
+
+                    //Cv2.ImWrite("swagdude.png", detected);
+                    //pong = ping;
+                    Cv2.CvtColor(pong, ping, ColorConversionCodes.HSV2RGB);
+
+                    pong = ping;
+                    int width = pong.Width, height = pong.Height;
+                    if (mOpenCvTexture == null)
+                    {
+                        mOpenCvTexture = new Texture2D(width, height);
+                    }
+                    mOpenCvTexture.LoadImage(pong.ToBytes());
+
+                    mOpenCvTarget.GetComponent<SpriteRenderer>().sprite = Sprite.Create(mOpenCvTexture, new UnityEngine.Rect(0.0f, 0.0f, width, height), new Vector2(0.5f, 0.5f), 1.0f);
                 }
             }
             
-        }
+        }*/
     }
 
     /// <summary>
