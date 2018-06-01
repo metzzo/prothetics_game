@@ -4,18 +4,21 @@ using UnityEngine;
 using OpenCvSharp;
 using Vuforia;
 
-public class ArmTracker : MonoBehaviour
+public class ArmTracker : MonoBehaviour, ITrackableEventHandler
 {
     #region PRIVATE_MEMBERS
 
     private const Image.PIXEL_FORMAT mPixelFormat = Image.PIXEL_FORMAT.RGBA8888;
-    
+    private TrackableBehaviour mTrackableBehaviour;
     private bool mFormatRegistered = false;
 
     #endregion // PRIVATE_MEMBERS
 
     public Texture2D mOpenCvTexture;
     public GameObject mOpenCvTarget;
+    public GameObject mMarker;
+
+    public GameObject mBody;
 
     #region MONOBEHAVIOUR_METHODS
 
@@ -26,11 +29,23 @@ public class ArmTracker : MonoBehaviour
         VuforiaARController.Instance.RegisterTrackablesUpdatedCallback(OnTrackablesUpdated);
         VuforiaARController.Instance.RegisterOnPauseCallback(OnPause);
 
+        mTrackableBehaviour = mMarker.GetComponent<TrackableBehaviour>();
+        if (mTrackableBehaviour)
+        {
+            mTrackableBehaviour.RegisterTrackableEventHandler(this);
+        }
+
+        mBody.SetActive(false);
     }
 
     #endregion // MONOBEHAVIOUR_METHODS
 
     #region PRIVATE_METHODS
+
+    void Update()
+    {
+           
+    }
 
     void OnVuforiaStarted()
     {
@@ -62,6 +77,8 @@ public class ArmTracker : MonoBehaviour
     /// </summary>
     void OnTrackablesUpdated()
     {
+
+
         /*
         if (mFormatRegistered)
         {
@@ -118,6 +135,24 @@ public class ArmTracker : MonoBehaviour
             }
             
         }*/
+    }
+
+    public void OnTrackableStateChanged(
+                                    TrackableBehaviour.Status previousStatus,
+                                    TrackableBehaviour.Status newStatus)
+    {
+        if (newStatus == TrackableBehaviour.Status.DETECTED ||
+            newStatus == TrackableBehaviour.Status.TRACKED ||
+            newStatus == TrackableBehaviour.Status.EXTENDED_TRACKED)
+        {
+            Debug.Log("Active");
+            mBody.SetActive(true);
+        }
+        else
+        {
+            Debug.Log("Inactive");
+            mBody.SetActive(false);
+        }
     }
 
     /// <summary>
