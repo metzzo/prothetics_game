@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using UnityEngine;
 using OpenCvSharp;
 using Vuforia;
+using LockingPolicy = Thalmic.Myo.LockingPolicy;
+using Pose = Thalmic.Myo.Pose;
+using UnlockType = Thalmic.Myo.UnlockType;
+using VibrationType = Thalmic.Myo.VibrationType;
 
 public class ArmTracker : MonoBehaviour, ITrackableEventHandler
 {
@@ -19,6 +23,14 @@ public class ArmTracker : MonoBehaviour, ITrackableEventHandler
     public GameObject mMarker;
 
     public GameObject mBody;
+
+    public GameObject myo = null;
+    // The pose from the last update. This is used to determine if the pose has changed
+    // so that actions are only performed upon making them rather than every frame during
+    // which they are active.
+    private Pose _lastPose = Pose.Unknown;
+    private float mArmExtension;
+    public GameObject mUpperArm;
 
     #region MONOBEHAVIOUR_METHODS
 
@@ -44,7 +56,36 @@ public class ArmTracker : MonoBehaviour, ITrackableEventHandler
 
     void Update()
     {
-           
+        ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo>();
+
+        if (thalmicMyo.pose == Pose.WaveIn)
+        {
+            Debug.Log("Wave in");
+            this.mArmExtension += -1.0f * Time.deltaTime;
+            if (this.mArmExtension <= -1.25f)
+            {
+                this.mArmExtension = -1.25f;
+            } else { 
+                mUpperArm.transform.Translate(new Vector3(-1.0f * Time.deltaTime, 0.0f, 0.0f));
+                ExtendUnlockAndNotifyUserAction(thalmicMyo);
+            }
+        }
+        else if (thalmicMyo.pose == Pose.WaveOut)
+        {
+            Debug.Log("Wave out");
+            this.mArmExtension += 1.0f * Time.deltaTime;
+            if (this.mArmExtension >= 2.6f)
+            {
+                this.mArmExtension = 2.6f;
+            }
+            else
+            {
+                mUpperArm.transform.Translate(new Vector3(1.0f * Time.deltaTime, 0.0f, 0.0f));
+                ExtendUnlockAndNotifyUserAction(thalmicMyo);
+            }
+
+        }
+        
     }
 
     void OnVuforiaStarted()
@@ -199,6 +240,17 @@ public class ArmTracker : MonoBehaviour, ITrackableEventHandler
         Debug.Log("Unregistering camera pixel format " + mPixelFormat.ToString());
         CameraDevice.Instance.SetFrameFormat(mPixelFormat, false);
         mFormatRegistered = false;
+    }
+    void ExtendUnlockAndNotifyUserAction(ThalmicMyo myo)
+    {
+        ThalmicHub hub = ThalmicHub.instance;
+
+        if (hub.lockingPolicy == LockingPolicy.Standard)
+        {
+            myo.Unlock(UnlockType.Timed);
+        }
+
+        myo.NotifyUserAction();
     }
 
     #endregion //PRIVATE_METHODS

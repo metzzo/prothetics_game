@@ -58,6 +58,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Assets\DestructibleWallGenerator\DWG\Scripts\DWGBuilder.cs" />
+    <Compile Include="Assets\DestructibleWallGenerator\DWG\Scripts\DWGColliderEnabler.cs" />
+    <Compile Include="Assets\DestructibleWallGenerator\DWG\Scripts\DWGCreateBrick.cs" />
+    <Compile Include="Assets\DestructibleWallGenerator\DWG\Scripts\DWGDestroyer.cs" />
+    <Compile Include="Assets\DestructibleWallGenerator\DWG\Scripts\DWGPhysicsCheck.cs" />
+    <Compile Include="Assets\DestructibleWallGenerator\DWG\Scripts\DWGTagManager.cs" />
+    <Compile Include="Assets\DestructibleWallGenerator\Example\Scripts\CameraFreeRoam.cs" />
+    <Compile Include="Assets\DestructibleWallGenerator\Example\Scripts\ThrowObject.cs" />
     <Compile Include="Assets\Myo Samples\Scripts\ColorBoxByPose.cs" />
     <Compile Include="Assets\Myo Samples\Scripts\JointOrientation.cs" />
     <Compile Include="Assets\Myo Samples\Scripts\SampleSceneGUI.cs" />
@@ -79,13 +87,14 @@
     <None Include="Assets\StreamingAssets\Vuforia\VuforiaMars_ModelTarget.xml" />
     <None Include="Assets\Vuforia\Shaders\CameraDiffuse.shader" />
     <None Include="Assets\Vuforia\Shaders\VertexLitWithZ.shader" />
-    <None Include="Assets\StreamingAssets\Vuforia\prosthetics-game-marker.xml" />
     <None Include="Assets\Vuforia\Shaders\OutlineOpaque.shader" />
     <None Include="Assets\Packages\OpenCvSharp3-AnyCPU.3.4.1.20180319\lib\net20\OpenCvSharp.xml" />
     <None Include="Assets\StreamingAssets\Vuforia\VuforiaMars_Object_OT.xml" />
     <None Include="Assets\Vuforia\Shaders\DepthMask.shader" />
     <None Include="Assets\StreamingAssets\Vuforia\VuforiaMars_Images.xml" />
+    <None Include="Assets\DestructibleWallGenerator\DWG\Documentation\ReadMe.txt" />
     <None Include="Assets\Myo\README-MyoUnity.txt" />
+    <None Include="Assets\StreamingAssets\Vuforia\prosthetics-game-marker.xml" />
     <None Include="Assets\Vuforia\Shaders\BrightTexture.shader" />
     <None Include="Assets\StreamingAssets\Vuforia\VuforiaMars_VuMark.xml" />
     <None Include="Assets\Packages\OpenCvSharp3-AnyCPU.3.4.1.20180319\lib\net20\OpenCvSharp.Blob.xml" />
