@@ -31,6 +31,9 @@ public class ArmTracker : MonoBehaviour, ITrackableEventHandler
     private Pose _lastPose = Pose.Unknown;
     private float mArmExtension;
     public GameObject mUpperArm;
+    public GameObject mPivot;
+    private Vector3 mOldPosition;
+    public GameObject mBall;
 
     #region MONOBEHAVIOUR_METHODS
 
@@ -48,6 +51,8 @@ public class ArmTracker : MonoBehaviour, ITrackableEventHandler
         }
 
         mBody.SetActive(false);
+
+        mOldPosition = mPivot.transform.position;
     }
 
     #endregion // MONOBEHAVIOUR_METHODS
@@ -58,6 +63,7 @@ public class ArmTracker : MonoBehaviour, ITrackableEventHandler
     {
         ThalmicMyo thalmicMyo = myo.GetComponent<ThalmicMyo>();
 
+        var hasMoved = false;
         if (thalmicMyo.pose == Pose.WaveIn)
         {
             Debug.Log("Wave in");
@@ -68,6 +74,7 @@ public class ArmTracker : MonoBehaviour, ITrackableEventHandler
             } else { 
                 mUpperArm.transform.Translate(new Vector3(-1.0f * Time.deltaTime, 0.0f, 0.0f));
                 ExtendUnlockAndNotifyUserAction(thalmicMyo);
+                hasMoved = true;
             }
         }
         else if (thalmicMyo.pose == Pose.WaveOut)
@@ -82,10 +89,22 @@ public class ArmTracker : MonoBehaviour, ITrackableEventHandler
             {
                 mUpperArm.transform.Translate(new Vector3(1.0f * Time.deltaTime, 0.0f, 0.0f));
                 ExtendUnlockAndNotifyUserAction(thalmicMyo);
+                hasMoved = true;
             }
 
         }
-        
+
+        var delta = mPivot.transform.position - mOldPosition;
+
+        //Debug.Log("Delta " + delta);
+
+        if (hasMoved)
+        {
+            mBall.GetComponent<Rigidbody>().AddForce(-delta * 5000);
+        }
+
+
+        mOldPosition = mPivot.transform.position;
     }
 
     void OnVuforiaStarted()
