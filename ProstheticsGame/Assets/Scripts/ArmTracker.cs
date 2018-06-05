@@ -35,7 +35,7 @@ public class ArmTracker : MonoBehaviour, ITrackableEventHandler
     private Vector3 mOldPosition;
     public GameObject mBall;
 
-    public GameObject world;
+    public GameObject rotateWorld;
 
     #region MONOBEHAVIOUR_METHODS
 
@@ -98,7 +98,7 @@ public class ArmTracker : MonoBehaviour, ITrackableEventHandler
         else if (thalmicMyo.pose == Pose.Fist) {
             Debug.Log("Fist!!!!!!!!11");
 
-            world.transform.Rotate(new Vector3(0, 1, 0));
+            rotateWorld.transform.Rotate(new Vector3(0, 1, 0));
         }
 
         var delta = mPivot.transform.position - mOldPosition;
